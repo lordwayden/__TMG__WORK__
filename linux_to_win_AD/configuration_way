@@ -74,3 +74,7 @@ nano /etc/resolv.conf
 ### проверки ###
 nslookup tmg.local
 ping tmg.local
+
+### для входа доменной уетной записи при запуске сиситемы ###
+sudo bash -c "for i in 2 3 4 5; do mv /etc/rc$i.d/S20winbind /etc/rc$i.d/S99winbind; done"
+
