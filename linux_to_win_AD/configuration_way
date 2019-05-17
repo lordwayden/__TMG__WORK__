@@ -4,10 +4,12 @@ aptitude install samba
 aptitude install winbind
 aptitude install libnss-winbind
 aptitude install libpam-winbind
+
 ### DHCP ###
 nano /etc/interfaces
     dns-nameservers 10.128.150.41
     dns-search tmg.local
+
 ### Kerberos-client
 nano /etc/krb5.conf
     [libdefaults]
@@ -21,7 +23,38 @@ nano /etc/krb5.conf
         krb4_convert = true
         krb4_get_tickets = false
 
+### проверка корректности настроек службы Kerberos ###
+kinit %username%@TMG.LOCAL
 
+### проверка полученных билетов (tickets) ###
+klist
+
+### базовая настройка smb.conf ###
+    [global]
+        workgroup = TMG
+        server string = %h serverv (Samba, Ubuntu)
+        wins support = no
+        realm = TMG.LOCAL
+        dns proxy = yes
+        log file = /var/log/samba/log.%m
+        max log size = 1000
+        syslog = 0
+        panic action = /usr/share/samba/panic-action %d
+        server role = member server
+        template shell = /bin/bash
+
+### подключение к домену ###       
+net ads join -U "%username%@TMG.LOCAL"
+
+### перезапуск служб ###
+service smbd restart
+service nmbd restart
+service winbinds restart
+
+### настройка связки local user- domain user ###
+nano /etc/nsswitch.conf
+    passwd: compat winbind
+    group: compat winbind
 
 ### синхронизация времени ###
 nano /etc/samba/smb.conf 
