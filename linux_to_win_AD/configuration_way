@@ -55,6 +55,7 @@ service winbinds restart
 nano /etc/nsswitch.conf
     passwd: compat winbind
     group: compat winbind
+    hosts:          files dns mdsn4
 
 ### синхронизация времени ###
 nano /etc/samba/smb.conf 
@@ -64,10 +65,12 @@ service ntp restart
 ### дополнение по проверкам вписанных имен ###
 cat /etc/hosts/
 hostname
+
 ### отредактировать ###
 nano /etc/resolv.conf
-    #nameserver 127.0.0.53
     nameserver 10.128.150.41
+    search tmg.local
+
 ### проверки ###
 nslookup tmg.local
 ping tmg.local
