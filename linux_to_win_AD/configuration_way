@@ -1,0 +1,30 @@
+### проинсталить ###
+aptitude install krb5-user
+aptitude install samba
+aptitude install winbind
+aptitude install libnss-winbind
+aptitude install libpam-winbind
+### DHCP ###
+nano /etc/interfaces
+    dns-nameservers 10.128.150.41
+    dns-search tmg.local
+### Kerberos-client
+nano /etc/krb5.conf
+    [libdefaults]
+        default_realm = TMG.LOCAL
+        dns_lookup_realm = true
+        dns_lookup_kdc = true
+        rdns = true
+        ticket_lifetime = 24h
+        forwardable = yes
+    [login]
+        krb4_convert = true
+        krb4_get_tickets = false
+
+
+
+### синхронизация времени ###
+nano /etc/samba/smb.conf 
+    server 10.128.150.41
+service ntp restart
+###
