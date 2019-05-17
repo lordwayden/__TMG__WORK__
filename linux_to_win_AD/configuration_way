@@ -57,6 +57,10 @@ service smbd restart
 service nmbd restart
 service winbinds restart
 
+sudo /etc/init.d/winbind stop
+sudo smbd restart
+sudo /etc/init.d/winbind start
+
 ### настройка связки local user- domain user ###
 nano /etc/nsswitch.conf
     passwd: compat winbind
