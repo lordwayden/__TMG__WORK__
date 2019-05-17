@@ -60,4 +60,14 @@ nano /etc/nsswitch.conf
 nano /etc/samba/smb.conf 
     server 10.128.150.41
 service ntp restart
-###
+
+### дополнение по проверкам вписанных имен ###
+cat /etc/hosts/
+hostname
+### отредактировать ###
+nano /etc/resolv.conf
+    #nameserver 127.0.0.53
+    nameserver 10.128.150.41
+### проверки ###
+nslookup tmg.local
+ping tmg.local
