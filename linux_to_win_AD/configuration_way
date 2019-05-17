@@ -42,6 +42,12 @@ klist
         panic action = /usr/share/samba/panic-action %d
         server role = member server
         template shell = /bin/bash
+        winbind refresh tickets = yes
+        idmap uid = 10000 - 40000
+        idmap gid = 10000 - 40000
+        winbind enum groups = yes
+        winbind enum users = yes
+        winbind use default domain = yes
 
 ### подключение к домену ###       
 net ads join -U "%username%@TMG.LOCAL"
@@ -74,7 +80,3 @@ nano /etc/resolv.conf
 ### проверки ###
 nslookup tmg.local
 ping tmg.local
-
-### для входа доменной уетной записи при запуске сиситемы ###
-sudo bash -c "for i in 2 3 4 5; do mv /etc/rc$i.d/S20winbind /etc/rc$i.d/S99winbind; done"
-
