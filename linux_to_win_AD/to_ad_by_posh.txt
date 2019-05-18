@@ -1,0 +1,3 @@
+#get-credential получает имя и пароль для ввода в домен
+$cr=Get-Credential
+Add-Computer -DomainName "domain.local" -Credential $cr -NewName "NewPCName" -Force
