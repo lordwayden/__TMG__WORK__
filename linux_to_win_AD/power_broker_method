@@ -1,0 +1,64 @@
+sudo apt install krb5-user samba sssd ntp
+    TMG.LOCAL
+sudo nano /etc/krb5.conf
+    [libdefaults] default_realm = TMG.LOCAL
+    [realms] TMG.LOCAL = {
+        kdc = tmg-dc1-10
+        admin_server = tmg-dc1-10
+        default_domain = tmg.local
+    }
+    [domain_realm] 
+        .tmg.local = TMG.LOCAL
+        tmg.local = TMG.LOCAL
+sudo nano /etc/ntp.conf
+    # add below
+    server 10.128.150.41
+    server tmg-dc1-10.tmg.local
+sudo nano /etc/samba/smb.conf
+    [global]
+        workgroup = TMG
+        client signing = yes
+        client use spgning = yeskerberos method = secrets and keytab
+        realm = TMG.LOCAL
+        security = ads
+# create file in /etc/sssd/sssd.conf
+sudo nano /etc/sssd/sssd.conf
+    [sssd] 
+        services = nss, pam
+        config_file_version = 2
+        domains = tmg.local
+
+    [domain/tmg.local]
+        id_provider = ad
+        access_provider = ad
+# set permissions on this file
+sudo chown root:root /etc/sssd/sssd.conf
+sudo chown 600 /etc/sssd/sssd.conf
+
+# add below
+sudo nano /etc/hosts
+10.128.150.41 uaky uaky.tmg.local
+
+sudo nano /etc/nsswitch.conf
+    hosts: files mdsn4_minimal dns mdns4
+
+## reboot
+# obtain a kerberos ticket
+sudo kinit <AD username>
+# see expiration date
+sudo klist
+# join AD
+sudo ads join -k
+
+sudo systemctl sssd.service
+###
+sudo apt-get install openssh-server
+sudo service ssh status
+# add below
+sudo nano /etc/ssh/sshd.config
+AllowGroups domain-ssh-users ssh-users
+
+# to grant AD group sudo access via SSH
+sudo visudo
+# add below %admin
+%domain-ssh-users ALL=(ALL:ALL) ALL
