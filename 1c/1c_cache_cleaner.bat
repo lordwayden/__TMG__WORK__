@@ -1,9 +1,9 @@
 If Exist %USERPROFILE%\AppData\Roaming\1C\1Cv82 (
-rem Удаляем все файлы
+rem delete all files
 Del /F /Q %USERPROFILE%\AppData\Roaming\1C\1Cv82\*.*
 Del /F /Q %USERPROFILE%\AppData\Local\1C\1Cv82\*.*
 
-rem Удаляем все каталоги
-for /d %%i in («%USERPROFILE%\AppData\Roaming\1C\1Cv82\*») do rmdir /s /q «%%i»
-for /d %%i in («%USERPROFILE%\AppData\Local\1C\1Cv82\*») do rmdir /s /q «%%i»
+rem delete all catalogs
+for /d %%i in (В«%USERPROFILE%\AppData\Roaming\1C\1Cv82\*В») do rmdir /s /q В«%%iВ»
+for /d %%i in (В«%USERPROFILE%\AppData\Local\1C\1Cv82\*В») do rmdir /s /q В«%%iВ»
 )
