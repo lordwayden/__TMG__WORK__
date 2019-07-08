@@ -1,4 +1,5 @@
 #!/bin/bash
+## Bash script for generate SSH RSA keys
 
 if [[ $1 && $2 ]]
 then
